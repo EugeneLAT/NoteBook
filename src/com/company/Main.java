@@ -61,6 +61,7 @@ public class Main {
                     createPerson();
                     return;
                 case "help":
+                    System.out.println("You have command:");
                     System.out.println("1. person");
                     break;
                 default:
