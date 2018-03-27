@@ -1,17 +1,10 @@
 package com.company;
 
-public class Person {
-    private static int counter = 0;
-    private int id;
+public class Person  extends Record{
     private String firstName;
     private String lastName;
     private String phone;
     private String email;
-
-    public Person() {
-        counter++;
-        id = counter;
-    }
 
     public String getEmail() {
         return email;
@@ -19,10 +12,6 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getFirstName() {
@@ -52,10 +41,31 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public void askUserData() {
+        System.out.println("If your name have 2 words, write your name with: \"\" !");
+        System.out.println("Example: \"Test1 Test2\"");
+        String firstName = Main.askString("First name: ");
+        String lastName = Main.askString("Last name: ");
+        String phone = Main.askString("Phone: ");
+        String email = Main.askString("E-Mail: ");
+
+        setFirstName(firstName);
+        setLastName(lastName);
+        setPhone(phone);
+        setEmail(email);
+    }
+
+    @Override
+    public boolean contains(String part) {
+        return false;
     }
 }

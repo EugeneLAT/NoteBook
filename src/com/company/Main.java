@@ -8,10 +8,11 @@ import java.util.Scanner;
 public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
-    private static ArrayList<Person> records = new ArrayList<>();
+    private static ArrayList<Record> records = new ArrayList<>();
+
 
     public static void main(String[] args) {
-        System.out.println("If you want help! Write: help!");
+        System.out.println("If you want help! Write: Help!");
         commandLoop();
 
     }
@@ -29,11 +30,15 @@ public class Main {
                 case "list":
                     list();
                     break;
+                case "search":
+                    search();
+                    break;
                 case "help":
                     System.out.println("You have command:");
-                    System.out.println("1. create");
-                    System.out.println("2. list");
-                    System.out.println("3. exit");
+                    System.out.println("1. Create");
+                    System.out.println("2. List");
+                    System.out.println("3. Search");
+                    System.out.println("4. Exit");
 
 
                     break;
@@ -44,8 +49,20 @@ public class Main {
     }
 
     private static void list() {
-        for (Person p : records) {
-            System.out.println(p);
+        for (Record r : records) {
+            System.out.println(r);
+        }
+    }
+
+    private static void search() {
+        String part = askString("Find: ");
+        for (Record r : records) {
+            if(r.contains(part)){
+            System.out.println(r);
+            }
+        }
+        for(Record r : records){
+
         }
     }
 
@@ -58,11 +75,15 @@ public class Main {
                 case "back":
                     return;
                 case "person":
-                    createPerson();
+                    addRecord(new Person());
+                    return;
+                case "note":
+                    addRecord(new Note());
                     return;
                 case "help":
                     System.out.println("You have command:");
-                    System.out.println("1. person");
+                    System.out.println("1. Person");
+                    System.out.println("2. Note");
                     break;
                 default:
                     System.out.println("Unknown command!");
@@ -71,25 +92,27 @@ public class Main {
 
     }
 
-    private static void createPerson() {
-
-        String firstName = askString("First name: ");
-        String lastName = askString("Last name: ");
-        String phone = askString("Phone: ");
-        String email = askString("E-Mail: ");
-
-        Person person = new Person();
-        person.setFirstName(firstName);
-        person.setLastName(lastName);
-        person.setPhone(phone);
-        person.setEmail(email);
-
-        records.add(person);
-
+    private static void addRecord(Record record) {
+        record.askUserData();
+        records.add(record);
+        System.out.println("Created!");
     }
 
-    private static  String askString(String message){
+    static String askString(String message) {
         System.out.print(message);
-        return scanner.next();
+        String str = scanner.next();
+
+        if (str.startsWith("\"")) {
+            ArrayList<String> list = new ArrayList<>();
+            list.add(str);
+            while (!str.endsWith("\"")) {
+                str = scanner.next();
+                list.add(str);
+            }
+            str = String.join(" ", list);
+            str = str.substring(1, str.length() - 1);
+        }
+        return str;
+
     }
 }
