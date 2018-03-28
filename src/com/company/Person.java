@@ -1,3 +1,4 @@
+
 package com.company;
 
 public class Person  extends Record{
@@ -38,7 +39,6 @@ public class Person  extends Record{
         this.phone = phone;
     }
 
-
     @Override
     public String toString() {
         return "Person{" +
@@ -46,7 +46,6 @@ public class Person  extends Record{
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
                 '}';
     }
 
@@ -68,6 +67,6 @@ public class Person  extends Record{
 
     @Override
     public boolean contains(String part) {
-    return false;
+        return false;
     }
 }
