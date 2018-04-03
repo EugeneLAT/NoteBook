@@ -19,6 +19,7 @@ public class Main {
 
     private static void commandLoop() {
         for (; ; ) {
+            System.out.println(">>>Main<<<");
             String cmd = askString("cmd> ");
 
             switch (cmd.toLowerCase()) {
@@ -38,7 +39,7 @@ public class Main {
                     System.out.println("1. Create");
                     System.out.println("2. List");
                     System.out.println("3. Search");
-                    System.out.println("4. Exit");
+                    System.out.println("6. Exit");
 
 
                     break;
@@ -55,19 +56,19 @@ public class Main {
     }
 
     private static void search() {
+        System.out.println(">>>Search<<<");
         String part = askString("Find: ");
         for (Record r : records) {
-            if(r.contains(part)){
-            System.out.println(r);
+            if (r.contains(part)) {
+                System.out.println(r);
             }
         }
-        for(Record r : records){
 
-        }
     }
 
     private static void create() {
         for (; ; ) {
+            System.out.println(">>>Create<<<");
             System.out.println("What do you want create?");
 
             String cmdCreate = askString("cmd> ");
@@ -80,10 +81,19 @@ public class Main {
                 case "note":
                     addRecord(new Note());
                     return;
+                case "alarm":
+                    addRecord(new Alarm());
+                    break;
+                case "remind":
+                    addRecord(new Remind());
+                    break;
                 case "help":
                     System.out.println("You have command:");
                     System.out.println("1. Person");
                     System.out.println("2. Note");
+                    System.out.println("3. Alarm");
+                    System.out.println("4. Remind");
+                    System.out.println("5. Back");
                     break;
                 default:
                     System.out.println("Unknown command!");
