@@ -1,6 +1,8 @@
 package com.company;
 
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -34,17 +36,40 @@ public class Main {
                 case "search":
                     search();
                     break;
+                case "expired":
+                    findExpired();
+                    break;
                 case "help":
                     System.out.println("You have command:");
                     System.out.println("1. Create");
                     System.out.println("2. List");
                     System.out.println("3. Search");
-                    System.out.println("6. Exit");
-
-
+                    System.out.println("4. Expired");
+                    System.out.println("5. Exit");
                     break;
                 default:
                     System.out.println("Unknown command!");
+            }
+        }
+    }
+
+    private static void findExpired() {
+        LocalTime now = LocalTime.now();
+        LocalDateTime nowDT = LocalDateTime.now();
+        for (Record r : records) {
+            if (r instanceof Alarm && !(r instanceof Remind)) {
+                Alarm a = (Alarm) r;
+                if(a.getTime().isBefore(now)){
+                    System.out.println(a);
+                }
+            }
+
+            if (r instanceof Remind){
+                Remind rem = (Remind) r;
+                LocalDateTime dt = rem.getDate().atTime(rem.getTime());
+                if (dt.isBefore(nowDT)){
+                    System.out.println(rem);
+                }
             }
         }
     }

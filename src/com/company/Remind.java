@@ -1,55 +1,45 @@
 package com.company;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Remind extends Alarm {
-    private String time;
-    private String data;
-    private String text;
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private LocalDate date;
 
-    public String getTime() {
-        return time;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setData(LocalDate date) {
+        this.date = date;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     @Override
     public void askUserData() {
         super.askUserData();
-        String data = Main.askString("Enter data: ");
-
-        setData(data);
+        String strDate = Main.askString("Enter date " + "(Format " + DATE_FORMAT +")" + ": ");
+        LocalDate date = LocalDate.parse(strDate, DATE_FORMATTER);
+        setData(date);
     }
 
     @Override
     public boolean contains(String part) {
-        return getData().contains(part)
+         String strDate = DATE_FORMATTER.format(date);
+        return strDate.contains(part)
                 || super.contains(part);
     }
 
     @Override
     public String toString() {
+        String strDate = DATE_FORMATTER.format(date);
         return "Remind{" +
                 "id=" + getId() +
-                "time='" + time + '\'' +
-                ", data='" + data + '\'' +
-                ", text='" + text + '\'' +
+                "time='" + getTime() + '\'' +
+                ", date='" + strDate + '\'' +
+                ", text='" + getText() + '\'' +
                 '}';
     }
 }

@@ -1,29 +1,36 @@
 package com.company;
 
-public class Alarm extends Note {
-    private String time;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-    public String getTime() {
+public class Alarm extends Note {
+    public static final String TIME_FORMAT = "HH:mm";
+    public static final DateTimeFormatter TIME_FORMATTER
+            = DateTimeFormatter.ofPattern(TIME_FORMAT);
+    private LocalTime time;
+
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
     @Override
     public void askUserData() {
         super.askUserData();
-        String time = Main.askString("Enter time: ");
-
+        String strTime = Main.askString("Enter time " + "(Format " + TIME_FORMAT +")" + ": ");
+        LocalTime time = LocalTime.parse(strTime, TIME_FORMATTER);
 
         setTime(time);
-
     }
 
     @Override
     public boolean contains(String part) {
-        return getTime().contains(part)
+        String strTime = TIME_FORMATTER.format(time);
+
+        return strTime.contains(part)
                 || super.contains(part);
     }
 
