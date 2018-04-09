@@ -19,10 +19,12 @@ public class Remind extends Alarm {
 
     @Override
     public void askUserData() {
+
         super.askUserData();
         String strDate = Main.askString("Enter date " + "(Format " + DATE_FORMAT +")" + ": ");
         LocalDate date = LocalDate.parse(strDate, DATE_FORMATTER);
         setData(date);
+
     }
 
     @Override
@@ -37,7 +39,7 @@ public class Remind extends Alarm {
         String strDate = DATE_FORMATTER.format(date);
         return "Remind{" +
                 "id=" + getId() +
-                "time='" + getTime() + '\'' +
+                " time='" + getTime() + '\'' +
                 ", date='" + strDate + '\'' +
                 ", text='" + getText() + '\'' +
                 '}';

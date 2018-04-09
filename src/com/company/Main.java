@@ -3,6 +3,7 @@ package com.company;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -59,15 +60,15 @@ public class Main {
         for (Record r : records) {
             if (r instanceof Alarm && !(r instanceof Remind)) {
                 Alarm a = (Alarm) r;
-                if(a.getTime().isBefore(now)){
+                if (a.getTime().isBefore(now)) {
                     System.out.println(a);
                 }
             }
 
-            if (r instanceof Remind){
+            if (r instanceof Remind) {
                 Remind rem = (Remind) r;
                 LocalDateTime dt = rem.getDate().atTime(rem.getTime());
-                if (dt.isBefore(nowDT)){
+                if (dt.isBefore(nowDT)) {
                     System.out.println(rem);
                 }
             }
@@ -128,9 +129,15 @@ public class Main {
     }
 
     private static void addRecord(Record record) {
-        record.askUserData();
-        records.add(record);
-        System.out.println("Created!");
+        try {
+            record.askUserData();
+            records.add(record);
+            System.out.println("Created!");
+        } catch (DateTimeParseException e) {
+            System.out.println("Something wrong!");
+            System.out.println("Please start again!");
+        }
+
     }
 
     static String askString(String message) {
