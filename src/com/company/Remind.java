@@ -2,6 +2,7 @@ package com.company;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Remind extends Alarm {
     public static final String DATE_FORMAT = "dd/MM/yyyy";
@@ -20,10 +21,10 @@ public class Remind extends Alarm {
     @Override
     public void askUserData() {
 
-        super.askUserData();
-        String strDate = Main.askString("Enter date " + "(Format " + DATE_FORMAT +")" + ": ");
-        LocalDate date = LocalDate.parse(strDate, DATE_FORMATTER);
-        setData(date);
+            super.askUserData();
+            String strDate = Main.askString("Enter date " + "(Format " + DATE_FORMAT + ")" + ": ");
+            LocalDate date = LocalDate.parse(strDate, DATE_FORMATTER);
+            setData(date);
 
     }
 
