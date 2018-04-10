@@ -37,6 +37,9 @@ public class Main {
                 case "search":
                     search();
                     break;
+                case "alarm":
+                    addRecord(new Alarm());
+                    break;
                 case "expired":
                     findExpired();
                     break;
@@ -45,8 +48,9 @@ public class Main {
                     System.out.println("1. Create");
                     System.out.println("2. List");
                     System.out.println("3. Search");
-                    System.out.println("4. Expired");
-                    System.out.println("5. Exit");
+                    System.out.println("4. Alarm");
+                    System.out.println("5. Expired");
+                    System.out.println("6. Exit");
                     break;
                 default:
                     System.out.println("Unknown command!");
@@ -107,9 +111,6 @@ public class Main {
                 case "note":
                     addRecord(new Note());
                     return;
-                case "alarm":
-                    addRecord(new Alarm());
-                    break;
                 case "remind":
                     addRecord(new Remind());
                     break;
@@ -117,7 +118,6 @@ public class Main {
                     System.out.println("You have command:");
                     System.out.println("1. Person");
                     System.out.println("2. Note");
-                    System.out.println("3. Alarm");
                     System.out.println("4. Remind");
                     System.out.println("5. Back");
                     break;
@@ -136,7 +136,7 @@ public class Main {
         } catch (DateTimeParseException e) {
             System.out.println("Something wrong!");
             System.out.println("Please start again!");
-       }
+        }
 
     }
 
