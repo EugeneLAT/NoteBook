@@ -43,21 +43,33 @@ public class Main {
                 case "expired":
                     findExpired();
                     break;
+                case "show":
+                    show();
+                    break;
                 case "help":
                     System.out.println("You have command:");
                     System.out.println("1. Create");
                     System.out.println("2. List");
                     System.out.println("3. Search");
                     System.out.println("4. Alarm");
-                    System.out.println("4. Alarm");
-                    System.out.println("4. Alarm");
                     System.out.println("5. Expired");
-                    System.out.println("6. Exit");
+                    System.out.println("6. Show");
+                    System.out.println("7. Exit");
                     break;
                 default:
                     System.out.println("Unknown command!");
             }
         }
+    }
+
+    private static void show() {
+        System.out.print("Enter ID: ");
+        String strID = scanner.next();
+        for (Record r : records) {
+            if(strID == )
+            System.out.println(r);
+        }
+
     }
 
     private static void findExpired() {
