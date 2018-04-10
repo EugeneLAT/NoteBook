@@ -1,17 +1,28 @@
 package com.company;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 
 public class Main {
 
-    private static Scanner scanner = new Scanner(System.in);
-    private static ArrayList<Record> records = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
+    static TreeMap<Integer, Record> recordsMap = new TreeMap<>();
+
+
+    public static final String TIME_FORMAT = "HH:mm";
+    public static final DateTimeFormatter TIME_FORMATTER
+            = DateTimeFormatter.ofPattern(TIME_FORMAT);
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
 
     public static void main(String[] args) {
@@ -34,9 +45,6 @@ public class Main {
                 case "list":
                     list();
                     break;
-                case "search":
-                    search();
-                    break;
                 case "alarm":
                     addRecord(new Alarm());
                     break;
@@ -50,11 +58,10 @@ public class Main {
                     System.out.println("You have command:");
                     System.out.println("1. Create");
                     System.out.println("2. List");
-                    System.out.println("3. Search");
+                    System.out.println("3. Show");
                     System.out.println("4. Alarm");
                     System.out.println("5. Expired");
-                    System.out.println("6. Show");
-                    System.out.println("7. Exit");
+                    System.out.println("6. Exit");
                     break;
                 default:
                     System.out.println("Unknown command!");
@@ -63,51 +70,51 @@ public class Main {
     }
 
     private static void show() {
-        System.out.print("Enter ID: ");
-        String strID = scanner.next();
-        for (Record r : records) {
-            if(strID == )
-            System.out.println(r);
+        System.out.println(">>>Show<<<");
+        String cmd = askString("cmd> ");
+        switch (cmd.toLowerCase()) {
+            case "showid":
+                String strID = askString("Enter ID: ");
+                int id = Integer.parseInt(strID);
+                Record r = recordsMap.get(id);
+                System.out.println(r);
+                break;
+            case "showstr":
+                String findStr = askString("Find: ");
+                for (Record r1 : recordsMap.values()) {
+                    if (r1.contains(findStr)) {
+                        System.out.println(r1);
+                    }
+                }
+                break;
+            case "back":
+                return;
+            case "help":
+                System.out.println("You have command:");
+                System.out.println("1. ShowID");
+                System.out.println("1. ShowSTR");
+                System.out.println("5. Back");
+                break;
+            default:
+                System.out.println("Unknown command!");
         }
-
     }
 
     private static void findExpired() {
-        LocalTime now = LocalTime.now();
-        LocalDateTime nowDT = LocalDateTime.now();
-        for (Record r : records) {
-            if (r instanceof Alarm && !(r instanceof Remind)) {
-                Alarm a = (Alarm) r;
-                if (a.getTime().isBefore(now)) {
-                    System.out.println(a);
-                }
-            }
-
-            if (r instanceof Remind) {
-                Remind rem = (Remind) r;
-                LocalDateTime dt = rem.getDate().atTime(rem.getTime());
-                if (dt.isBefore(nowDT)) {
-                    System.out.println(rem);
+        for (Record r : recordsMap.values()) {
+            if (r instanceof Expirable) {
+                Expirable expirable = (Expirable) r;
+                if (expirable.isExpired()) {
+                    System.out.println(expirable);
                 }
             }
         }
     }
 
     private static void list() {
-        for (Record r : records) {
+        for (Record r : recordsMap.values()) {
             System.out.println(r);
         }
-    }
-
-    private static void search() {
-        System.out.println(">>>Search<<<");
-        String part = askString("Find: ");
-        for (Record r : records) {
-            if (r.contains(part)) {
-                System.out.println(r);
-            }
-        }
-
     }
 
     private static void create() {
@@ -125,15 +132,11 @@ public class Main {
                 case "note":
                     addRecord(new Note());
                     return;
-                case "remind":
-                    addRecord(new Remind());
-                    break;
                 case "help":
                     System.out.println("You have command:");
                     System.out.println("1. Person");
                     System.out.println("2. Note");
-                    System.out.println("4. Remind");
-                    System.out.println("5. Back");
+                    System.out.println("3. Back");
                     break;
                 default:
                     System.out.println("Unknown command!");
@@ -143,15 +146,10 @@ public class Main {
     }
 
     private static void addRecord(Record record) {
-        try {
-            record.askUserData();
-            records.add(record);
-            System.out.println("Created!");
-        } catch (DateTimeParseException e) {
-            System.out.println("Something wrong!");
-            System.out.println("Please start again!");
-        }
-
+        record.askUserData();
+        int id = record.getId();
+        recordsMap.put(id, record);
+        System.out.println("Created!");
     }
 
     static String askString(String message) {
@@ -169,6 +167,30 @@ public class Main {
             str = str.substring(1, str.length() - 1);
         }
         return str;
-
     }
+
+    public static LocalTime askTime(String message) {
+        for (; ; ) {
+            String strTime = askString(message + "(" + TIME_FORMAT + "):");
+            try {
+                LocalTime time = LocalTime.parse(strTime, TIME_FORMATTER);
+                return time;
+            } catch (DateTimeParseException e) {
+                System.out.println("Time isn't in right format!");
+            }
+        }
+    }
+
+    public static LocalDate askDate(String message) {
+        for (; ; ) {
+            String strDate = askString(message + "(" + DATE_FORMAT + "):");
+            try {
+                LocalDate date = LocalDate.parse(strDate, DATE_FORMATTER);
+                return date;
+            } catch (DateTimeParseException e) {
+                System.out.println("Date isn't in right format!");
+            }
+        }
+    }
+
 }
