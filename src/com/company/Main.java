@@ -49,6 +49,8 @@ public class Main {
                     System.out.println("2. List");
                     System.out.println("3. Search");
                     System.out.println("4. Alarm");
+                    System.out.println("4. Alarm");
+                    System.out.println("4. Alarm");
                     System.out.println("5. Expired");
                     System.out.println("6. Exit");
                     break;
