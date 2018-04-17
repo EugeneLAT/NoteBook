@@ -4,6 +4,7 @@ package com.company;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -50,9 +51,15 @@ public class Main {
                     break;
                 case "expired":
                     findExpired();
+
                     break;
                 case "show":
-                    show();
+                    try {
+                        show();
+                    }catch (Exception e){
+                        System.out.println("SORRY! Try again!");
+                    }
+
                     break;
                 case "help":
                     System.out.println("You have command:");
@@ -89,14 +96,33 @@ public class Main {
                 break;
             case "back":
                 return;
+            case "showbirthdays":
+                showBirthdays();
+                return;
             case "help":
                 System.out.println("You have command:");
                 System.out.println("1. ShowID");
-                System.out.println("1. ShowSTR");
-                System.out.println("5. Back");
+                System.out.println("2. ShowSTR");
+                System.out.println("3. ShowBirthday");
+                System.out.println("4. Back");
                 break;
             default:
                 System.out.println("Unknown command!");
+        }
+    }
+
+    private static void showBirthdays() {
+        LocalDate now = LocalDate.now();
+        Month nowMonth = now.getMonth();
+        for (Record r : recordsMap.values()) {
+            if (r instanceof WithBirthday) {
+                WithBirthday rwb = (WithBirthday) r;
+                LocalDate birthday = rwb.getBirthday();
+                Month birthdayMonth = birthday.getMonth();
+                if (nowMonth == birthdayMonth) {
+                    System.out.println(r);
+                }
+            }
         }
     }
 
@@ -132,11 +158,15 @@ public class Main {
                 case "note":
                     addRecord(new Note());
                     return;
+                case "pet":
+                    addRecord(new Pet());
+                    return;
                 case "help":
                     System.out.println("You have command:");
                     System.out.println("1. Person");
-                    System.out.println("2. Note");
-                    System.out.println("3. Back");
+                    System.out.println("2. Pet");
+                    System.out.println("3. Note");
+                    System.out.println("4. Back");
                     break;
                 default:
                     System.out.println("Unknown command!");
@@ -192,5 +222,6 @@ public class Main {
             }
         }
     }
+
 
 }

@@ -1,10 +1,22 @@
 package com.company;
 
-public class Person  extends Record{
+import java.time.LocalDate;
+
+public class Person extends Record implements WithBirthday{
     private String firstName;
     private String lastName;
     private String phone;
     private String email;
+    private LocalDate birthday;
+
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
 
     public String getEmail() {
         return email;
@@ -40,10 +52,12 @@ public class Person  extends Record{
 
     @Override
     public String toString() {
+        String strBirthday = Main.DATE_FORMATTER.format(getBirthday());
         return "Person{" +
                 "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", Birthday='" + strBirthday + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
     }
@@ -55,20 +69,25 @@ public class Person  extends Record{
         System.out.println("Example: \"Test1 Test2\"");
         String firstName = Main.askString("First name: ");
         String lastName = Main.askString("Last name: ");
+        LocalDate birthday = Main.askDate("Birthday: ");
         String phone = Main.askString("Phone: ");
         String email = Main.askString("E-Mail: ");
+
 
         setFirstName(firstName);
         setLastName(lastName);
         setPhone(phone);
         setEmail(email);
+        setBirthday(birthday);
     }
 
     @Override
     public boolean contains(String part) {
-    return firstName.contains(part)
-            || lastName.contains(part)
-            || phone.contains(part)
-            || email.contains(part);
+        String strBirthday = Main.DATE_FORMATTER.format(getBirthday());
+        return firstName.contains(part)
+                || lastName.contains(part)
+                || strBirthday.contains(part)
+                || phone.contains(part)
+                || email.contains(part);
     }
 }
